@@ -7,11 +7,11 @@ import { NotificationComponent } from './notification.component';
     providedIn: 'root',
 })
 export class NotificationService {
-    private readonly snackBar = inject(MatSnackBar);
+    private readonly snackBar = inject(MatSnackBar)
 
     showNotification(options: NotificationData) {
-        const config: MatSnackBarConfig = { data: options };
-        config.duration = options.duration ?? 5000;
-        return this.snackBar.openFromComponent(NotificationComponent, config);
+        const config: MatSnackBarConfig = { data: options }
+        config.duration = options.duration ?? 5000
+        return this.snackBar.openFromComponent(NotificationComponent, config)
     }
 }

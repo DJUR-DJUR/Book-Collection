@@ -14,25 +14,26 @@ import { MatButtonModule } from '@angular/material/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotificationComponent {
-  notificationData: NotificationData = inject(MAT_SNACK_BAR_DATA);
-  snackBarRef = inject(MatSnackBarRef);
-  icon: string = this.getIconByStyle();
+  notificationData: NotificationData = inject(MAT_SNACK_BAR_DATA)
+  snackBarRef = inject(MatSnackBarRef)
+  icon: string = this.getIconByStyle()
 
   getIconByStyle(): string {
-    let icon;
+    let icon
+
     switch (this.notificationData.style) {
       case MessageStyle.Error:
-        icon = 'warning';
-        break;
+        icon = 'warning'
+        break
       case MessageStyle.Success:
-        icon = 'check_circle';
-        break;
+        icon = 'check_circle'
+        break
       case MessageStyle.Neutral:
       default:
-        icon = 'error';
-        break;
+        icon = 'error'
+        break
     }
 
-    return icon;
+    return icon
   }
 }
