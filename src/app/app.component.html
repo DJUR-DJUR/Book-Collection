@@ -1,0 +1,40 @@
+<mat-card
+  appearance="outlined"
+  class="container mt-5"
+  [class.h-100]="error() || loading()"
+>
+  <app-header
+    (reloadData)="loadData()"
+  ></app-header>
+
+  @if (loading()) {
+    <div class="d-flex align-items-center justify-content-center h-100">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  } @else if (error()) {
+    <div class="d-flex flex-column align-items-center justify-content-center h-100">
+      <h5>Something went wrong. Please try again.</h5>
+      <button mat-raised-button (click)="loadData()">Reload</button>
+    </div>
+  } @else {
+    <div class="container">
+      <div class="row">
+        @for (book of bookList(); track book.id) {
+          <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+            <app-book
+              [book]="book"
+              (bookClick)="onBookClick(book)"
+              (bookEdit)="onEditBook(book)"
+              (bookDelete)="onDeleteBook(book)"
+            ></app-book>
+          </div>
+        }
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+          <mat-card class="d-flex justify-content-center align-items-center h-100 book-card" (click)="addNewBook()">
+              <mat-icon class="add-icon" matTooltip="Add book" [matTooltipShowDelay]="HINT_SHOW_DELAY">add</mat-icon>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  }
+</mat-card>

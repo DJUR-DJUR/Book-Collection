@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="d-flex justify-content-start align-items-center mb-4">
+    <div>
+      <div matDialogTitle>Are you sure you want to delete "{{ data.title }}"?</div>
+      <div matDialogContent>Please note that deleted book cannot be recovered!</div>
+    </div>
+  </div>
+
+  <mat-divider class="w-100"></mat-divider>
+
+  <div mat-dialog-actions align="end" class="pt-4">
+    <button mat-button
+            class="me-2 px-4"
+            matDialogClose
+            [disabled]="saving()"
+    >
+      <span class="px-2">Cancel</span>
+    </button>
+
+    <button mat-flat-button
+            color="warn"
+            class="px-4"
+            (click)="confirmDelete()"
+            [disabled]="saving()"
+    >
+      @if (!saving()) {
+        <span class="px-2">Delete</span>
+      } @else {
+        <div class="d-flex justify-content-center">
+          <mat-spinner diameter="24"></mat-spinner>
+        </div>
+      }
+    </button>
+  </div>
+</div>
+
+

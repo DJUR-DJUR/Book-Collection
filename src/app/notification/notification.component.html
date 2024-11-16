@@ -1,0 +1,17 @@
+<div class="d-flex justify-content-start align-items-center">
+  <mat-icon class="me-2" [ngClass]="notificationData.style">
+    {{ icon }}
+  </mat-icon>
+
+  <span class="me-2">{{ notificationData.message }}</span>
+
+  <span matSnackBarActions>
+    <button
+      mat-button
+      matSnackBarAction
+      (click)="snackBarRef.dismissWithAction()"
+    >
+      Close
+    </button>
+  </span>
+</div>

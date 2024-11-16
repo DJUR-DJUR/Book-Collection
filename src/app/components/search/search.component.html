@@ -1,0 +1,32 @@
+<div class="search-wrapper">
+  <mat-form-field class="vt-text-input vt-input vt-search-field" floatLabel="auto">
+    <mat-icon matPrefix>search</mat-icon>
+    <input
+      #searchInput
+      autocomplete="off"
+      matInput
+      type="text"
+      placeholder="Enter book title or autor name"
+      [formControl]="search"
+      (blur)="isBlurred.next(true)">
+
+    <button
+      matSuffix
+      mat-icon-button
+      class="me-2"
+      (mousedown)="clearSearch($event)"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+
+
+
+
+
+
+
+
+

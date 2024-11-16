@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="d-flex justify-content-start align-items-center mb-1">
+    <div matDialogTitle>Create book card</div>
+  </div>
+
+  <form [formGroup]="bookCreationForm">
+    @for (field of CREATE_FORM_FIELDS; track field.name) {
+      <div class="pb-2 px-2">
+        <mat-form-field class="w-100" appearance="outline" floatLabel="always">
+          <input [formControlName]="field.name" matInput [placeholder]="field.placeholder">
+          <mat-label>{{ field.label }}</mat-label>
+          <mat-error>{{ field.error }}</mat-error>
+        </mat-form-field>
+      </div>
+    }
+  </form>
+
+  <div class="px-2">
+    <small>* - required field</small>
+  </div>
+
+  <mat-divider class="w-100"></mat-divider>
+
+  <div mat-dialog-actions align="end" class="pt-4">
+    <button mat-button
+            class="me-2 px-4"
+            matDialogClose
+            [disabled]="saving()"
+    >
+      <span class="px-2">Cancel</span>
+    </button>
+
+    <button mat-flat-button
+            color="warn"
+            class="px-4"
+            [disabled]="bookCreationForm.invalid || saving()"
+            (click)="createNewBook()"
+    >
+      @if (!saving()) {
+        <span class="px-2">Create</span>
+      } @else {
+        <div class="d-flex justify-content-center">
+          <mat-spinner diameter="24"></mat-spinner>
+        </div>
+      }
+    </button>
+  </div>
+</div>

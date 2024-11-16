@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center w-100 my-3">
+    <h3 class="mb-0">Book Collection</h3>
+    <div class="d-flex justify-content-between align-items-center">
+      @if (showSearch()) {
+        <app-search
+          (isBlurred)="showSearch.set(false)"
+        ></app-search>
+      } @else {
+        <button mat-icon-button
+                matTooltip="Search book"
+                class="me-2"
+                [matTooltipShowDelay]="HINT_SHOW_DELAY"
+                (click)="showSearch.set(true)"
+        >
+          <mat-icon>search</mat-icon>
+        </button>
+      }
+
+      <button mat-icon-button
+              matTooltip="Request settings"
+              [matTooltipShowDelay]="HINT_SHOW_DELAY"
+              [matMenuTriggerFor]="settingsMenu"
+      >
+        <mat-icon>settings</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<mat-menu #settingsMenu="matMenu" xPosition="before" yPosition="below">
+  <div class="text-center">Request errors</div>
+
+  <mat-divider></mat-divider>
+
+  <div [formGroup]="errorSettingsForm" class="d-flex flex-column min-width-menu">
+    @for (controlName of errorSettingsControlNames(); track controlName) {
+      <div class="d-flex flex-row justify-content-between align-items-center ps-2 pe-1 py-1">
+        <div class="menu-item-label">{{ controlName | titlecase }}</div>
+
+        <mat-slide-toggle class="ms-3"
+                          [formControl]="getFormControl(controlName)"
+                          (click)="$event.stopPropagation()">
+        </mat-slide-toggle>
+      </div>
+    }
+  </div>
+</mat-menu>
