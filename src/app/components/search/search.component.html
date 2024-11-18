@@ -1,4 +1,4 @@
-<div class="search-wrapper">
+<div class="search-wrapper position-absolute">
   <mat-form-field class="vt-text-input vt-input vt-search-field" floatLabel="auto">
     <mat-icon matPrefix>search</mat-icon>
     <input
@@ -8,7 +8,7 @@
       type="text"
       placeholder="Enter book title or autor name"
       [formControl]="search"
-      (blur)="isBlurred.next(true)">
+      (blur)="onBlur()">
 
     <button
       matSuffix

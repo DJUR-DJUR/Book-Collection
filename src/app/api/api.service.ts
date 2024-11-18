@@ -1,4 +1,4 @@
-import { Injectable, Signal, signal, WritableSignal } from '@angular/core'
+import { Injectable, signal } from '@angular/core'
 import { Book, ErrorSettings } from '../interfaces/data-interfaces'
 import { booksMock } from './api-service-mocks'
 import { wait } from '../utils/utils'
@@ -19,19 +19,40 @@ export class ApiService {
   private getErrorSignal = signal<boolean>(false)
   private deleteErrorSignal = signal<boolean>(false)
   private postErrorSignal = signal<boolean>(false)
+  private putErrorSignal = signal<boolean>(false)
 
   bookList = this.bookListSignal.asReadonly()
   getError = this.getErrorSignal.asReadonly()
   deleteError = this.deleteErrorSignal.asReadonly()
   postError = this.postErrorSignal.asReadonly();
+  putError = this.putErrorSignal.asReadonly()
 
-  async getBookList(): Promise<void> {
+  async getBookList(filter = ''): Promise<void> {
     this.getErrorSignal.set(false)
     await wait(2000)
     if (this.errorSettings.get) {
       this.getErrorSignal.set(true)
     } else {
-      this.bookListSignal.set(booksMock)
+      const normalizedFilter = filter.trim().toLowerCase()
+      const filteredBooks = booksMock.filter(book =>
+        book.title.toLowerCase().includes(normalizedFilter) ||
+        book.author.toLowerCase().includes(normalizedFilter)
+      );
+      this.bookListSignal.set(filteredBooks);
+    }
+  }
+
+  async updateBook(bookId: string, updatedData: Partial<Book>): Promise<void> {
+    this.putErrorSignal.set(false);
+    await wait(2000);
+    if (this.errorSettings.put) {
+      this.putErrorSignal.set(true);
+    } else {
+      const currentList = this.bookListSignal();
+      const updatedList = currentList.map(book =>
+        book.id === bookId ? { ...book, ...updatedData } : book
+      );
+      this.bookListSignal.set(updatedList);
     }
   }
 
@@ -47,7 +68,7 @@ export class ApiService {
         avatar_url: bookData.avatar_url ?? '',
         title: bookData.title ?? '',
         author: bookData.author ?? '',
-        createdDate: bookData.createdDate ?? '',
+        createdDate: bookData.createdDate ? new Date(bookData.createdDate) : new Date(),
         description: bookData.description ?? '',
       };
       this.bookListSignal.set([...currentList, newBook]);

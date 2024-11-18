@@ -1,9 +1,9 @@
 <div class="container">
   <div class="d-flex justify-content-start align-items-center mb-1">
-    <div matDialogTitle>Create book card</div>
+    <div matDialogTitle>Update book card</div>
   </div>
 
-  <form [formGroup]="bookCreationForm">
+  <form [formGroup]="bookUpdatingForm">
     @for (field of BOOK_FORM_FIELDS; track field.name) {
       <div class="pb-2 px-2">
         <mat-form-field class="w-100" appearance="outline" floatLabel="always">
@@ -49,11 +49,11 @@
     <button mat-flat-button
             color="warn"
             class="px-4"
-            [disabled]="bookCreationForm.invalid || saving()"
-            (click)="createNewBook()"
+            [disabled]="bookUpdatingForm.invalid || saving() || isDataEqual"
+            (click)="updateBook()"
     >
       @if (!saving()) {
-        <span class="px-2">Create</span>
+        <span class="px-2">Update</span>
       } @else {
         <div class="d-flex justify-content-center">
           <mat-spinner diameter="24"></mat-spinner>

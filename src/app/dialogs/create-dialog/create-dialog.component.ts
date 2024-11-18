@@ -4,23 +4,24 @@ import {
   inject,
   OnInit,
   signal,
-} from '@angular/core'
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog'
-import { ApiService } from '../../api/api.service'
-import { NotificationService } from '../../notification/notification.service'
-import { MatButtonModule } from '@angular/material/button'
-import { MatIconModule } from '@angular/material/icon'
-import { MatDividerModule } from '@angular/material/divider'
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
-import { clearSelection } from '../../utils/utils'
-import { MatFormFieldModule } from '@angular/material/form-field'
-import { MatInputModule } from '@angular/material/input'
-import { MessageStyle } from '../../notification/notification.api'
-import { CREATE_FORM_FIELDS } from '../../constants/constants'
+} from '@angular/core';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { ApiService } from '../../api/api.service';
+import { NotificationService } from '../../notification/notification.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { clearSelection } from '../../utils/utils';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MessageStyle } from '../../notification/notification.api';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import {BOOK_FORM_FIELDS, MAX_DATE} from '../../constants/constants'
 
 @Component({
-  selector: 'app-create-dialog',
+  selector: 'app-create-book-dialog',
   standalone: true,
   imports: [
     MatIconModule,
@@ -31,6 +32,7 @@ import { CREATE_FORM_FIELDS } from '../../constants/constants'
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDatepickerModule,
   ],
   templateUrl: './create-dialog.component.html',
   styleUrls: ['./create-dialog.component.scss'],
@@ -46,7 +48,8 @@ export class CreateDialogComponent implements OnInit {
   private readonly notification = inject(NotificationService)
   private readonly formBuilder = inject(FormBuilder)
 
-  protected readonly CREATE_FORM_FIELDS = CREATE_FORM_FIELDS
+  protected readonly BOOK_FORM_FIELDS = BOOK_FORM_FIELDS
+  protected readonly MAX_DATE = MAX_DATE
 
   ngOnInit(): void {
     this.initForm()
@@ -58,8 +61,7 @@ export class CreateDialogComponent implements OnInit {
     this.saving.set(true)
     this.disableForm()
 
-    const formData = this.bookCreationForm.value;
-    await this.apiService.createBook(formData)
+    await this.apiService.createBook(this.bookCreationForm.value)
 
     if (this.apiService.postError()) {
       this.saving.set(false)
@@ -82,7 +84,7 @@ export class CreateDialogComponent implements OnInit {
       avatar_url: new FormControl(null, [Validators.maxLength(100)]),
       title: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
       author: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
-      createdDate: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+      createdDate: new FormControl(null, [Validators.required]),
       description: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
     })
   }

@@ -5,12 +5,13 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { DEFAULT_AVATAR_URL, HINT_SHOW_DELAY } from '../../constants/constants'
 import { Book } from '../../interfaces/data-interfaces'
+import {DatePipe} from '@angular/common';
 
 
 @Component({
   selector: 'app-book',
   standalone: true,
-  imports: [MatCardModule, MatIconModule, MatButtonModule, MatTooltipModule],
+  imports: [MatCardModule, MatIconModule, MatButtonModule, MatTooltipModule, DatePipe],
   templateUrl: './book.component.html',
   styleUrls: ['./book.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

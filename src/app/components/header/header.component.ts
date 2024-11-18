@@ -32,8 +32,8 @@ import { ApiService } from '../../api/api.service'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit {
-  @Output()
-  reloadData = new EventEmitter<void>()
+  @Output() reloadData = new EventEmitter<void>()
+  @Output() searchChange = new EventEmitter<string>();
 
   showSearch = signal<boolean>(false)
   errorSettingsControlNames = signal<string[]>([])
@@ -46,6 +46,14 @@ export class HeaderComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.initForm()
+  }
+
+  onSearch(event: string) {
+    this.searchChange.next(event);
+  }
+
+  onSearchBlur() {
+    this.showSearch.set(false)
   }
 
   getFormControl(controlName: string): FormControl {

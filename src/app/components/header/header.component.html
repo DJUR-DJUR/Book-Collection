@@ -1,10 +1,11 @@
 <div class="container">
   <div class="d-flex justify-content-between align-items-center w-100 my-3">
     <h3 class="mb-0">Book Collection</h3>
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex justify-content-between align-items-center position-relative">
       @if (showSearch()) {
         <app-search
-          (isBlurred)="showSearch.set(false)"
+          (isBlurred)="onSearchBlur()"
+          (searchChange)="onSearch($event)"
         ></app-search>
       } @else {
         <button mat-icon-button

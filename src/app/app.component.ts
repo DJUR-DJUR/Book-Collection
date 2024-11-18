@@ -9,9 +9,10 @@ import { MatTooltip } from '@angular/material/tooltip'
 import { HINT_SHOW_DELAY, MAX_WIDTH_POPUP_DESKTOP } from './constants/constants'
 import { MatDialog } from '@angular/material/dialog'
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component'
-import { CreateDialogComponent } from './dialogs/create-dialog/create-dialog.component'
 import { HeaderComponent } from './components/header/header.component'
 import { BookComponent } from './components/book/book.component'
+import {CreateDialogComponent} from './dialogs/create-dialog/create-dialog.component';
+import {EditDialogComponent} from './dialogs/edit-dialog/edit-dialog.component';
 
 
 @Component({
@@ -42,15 +43,21 @@ export class AppComponent implements OnInit {
     await this.loadData()
   }
 
-  async loadData(): Promise<void> {
+  async loadData(searchValue = ''): Promise<void> {
     this.loading.set(true)
-    await this.apiService.getBookList()
+    await this.apiService.getBookList(searchValue)
     this.loading.set(false)
   }
 
   onBookClick(book: Book) {}
 
-  onEditBook(book: Book) {}
+  onEditBook(book: Book) {
+    this.dialog.open(EditDialogComponent, {
+      maxWidth: MAX_WIDTH_POPUP_DESKTOP,
+      minWidth: MAX_WIDTH_POPUP_DESKTOP,
+      data: book,
+    })
+  }
 
   addNewBook(): void {
     this.dialog.open(CreateDialogComponent, {

@@ -11,7 +11,7 @@
 
   <mat-card-content>
     <mat-card-subtitle class="mb-2">{{ book().author }}</mat-card-subtitle>
-    <p><strong>Published:</strong>{{ book().createdDate }}</p>
+    <p><strong class="me-2">Published:</strong>{{ book().createdDate | date:'MM-dd-yyyy' }}</p>
     <p>{{ book().description }}</p>
   </mat-card-content>
 

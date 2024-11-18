@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { MatButtonModule } from '@angular/material/button'
 import { MatTooltipModule } from '@angular/material/tooltip'
+import {debounceTime, distinctUntilChanged } from 'rxjs';
 
 
 @Component({
@@ -26,19 +27,38 @@ import { MatTooltipModule } from '@angular/material/tooltip'
 export class SearchComponent {
   @ViewChild('searchInput') searchInput!: ElementRef;
 
-  @Output()
-  isBlurred = new EventEmitter<boolean>(false)
+  @Output() isBlurred = new EventEmitter<boolean>(false)
+  @Output() searchChange = new EventEmitter<string>();
 
-  search = new FormControl<string>('')
+  search = new FormControl<string>('', {nonNullable: true});
 
   constructor() {
     effect(() => {
       this.searchInput.nativeElement.focus()
     })
+
+    this.search.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+      )
+      .subscribe(value => {
+        this.searchChange.next(value);
+      });
   }
 
   clearSearch(event: MouseEvent) {
     event.preventDefault();
-    this.search.patchValue('', { emitEvent: false})
+
+    if (this.search.getRawValue()) {
+      this.search.patchValue('', { emitEvent: false})
+      this.searchChange.next('');
+    }
+  }
+
+  onBlur() {
+    if (!this.search.getRawValue()) {
+      this.isBlurred.next(true)
+    }
   }
 }

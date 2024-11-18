@@ -5,6 +5,7 @@
 >
   <app-header
     (reloadData)="loadData()"
+    (searchChange)="loadData($event)"
   ></app-header>
 
   @if (loading()) {
