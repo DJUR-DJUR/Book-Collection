@@ -10,4 +10,6 @@ export const BOOK_FORM_FIELDS = [
   { name: 'description', label: 'Description *', placeholder: 'Add description', error: 'Wrong description' },
 ]
 
-export const MAX_DATE = new Date();
+export const MAX_DATE = new Date()
+
+export const SEARCH_DEBOUNCE_TIME = 500

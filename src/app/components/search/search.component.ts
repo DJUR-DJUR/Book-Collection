@@ -14,6 +14,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { MatButtonModule } from '@angular/material/button'
 import { MatTooltipModule } from '@angular/material/tooltip'
 import {debounceTime, distinctUntilChanged } from 'rxjs';
+import {SEARCH_DEBOUNCE_TIME} from '../../constants/constants';
 
 
 @Component({
@@ -39,7 +40,7 @@ export class SearchComponent {
 
     this.search.valueChanges
       .pipe(
-        debounceTime(300),
+        debounceTime(SEARCH_DEBOUNCE_TIME),
         distinctUntilChanged(),
       )
       .subscribe(value => {

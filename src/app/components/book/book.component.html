@@ -1,18 +1,18 @@
 <mat-card class="d-flex flex-column justify-content-between h-100 book-card"
           (click)="bookClick.next()"
 >
-  <mat-card-header class="mb-2">
+  <mat-card-header class="mb-2 card-text">
     <div mat-card-avatar
          class="book-avatar"
          [style.background-image]="avatarUrl"
     ></div>
-    <mat-card-title class="mb-2">{{ book().title }}</mat-card-title>
+    <h5 class="card-text ms-3 mb-2">{{ book().title }}</h5>
   </mat-card-header>
 
   <mat-card-content>
-    <mat-card-subtitle class="mb-2">{{ book().author }}</mat-card-subtitle>
+    <mat-card-subtitle class="mb-2 card-text">{{ book().author }}</mat-card-subtitle>
     <p><strong class="me-2">Published:</strong>{{ book().createdDate | date:'MM-dd-yyyy' }}</p>
-    <p>{{ book().description }}</p>
+    <p class="card-text">{{ book().description }}</p>
   </mat-card-content>
 
   <mat-card-actions class="justify-content-end">
@@ -20,7 +20,7 @@
             class="me-1"
             matTooltip="Edit book card"
             [matTooltipShowDelay]="HINT_SHOW_DELAY"
-            (click)="bookEdit.next()"
+            (click)="bookEdit.next(); $event.stopPropagation()"
     >
       <mat-icon>edit</mat-icon>
     </button>
@@ -29,7 +29,7 @@
             color="warn"
             matTooltip="Delete book card"
             [matTooltipShowDelay]="HINT_SHOW_DELAY"
-            (click)="bookDelete.next()"
+            (click)="bookDelete.next(); $event.stopPropagation()"
     >
       <mat-icon>delete</mat-icon>
     </button>

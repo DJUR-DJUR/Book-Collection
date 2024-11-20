@@ -15,4 +15,10 @@
     height: 40px;
     font-size: 40px;
   }
+
+  .card-text {
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
+  }
 }

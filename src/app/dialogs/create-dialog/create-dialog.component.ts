@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { clearSelection } from '../../utils/utils';
+import {clearSelection, imageUrlValidator} from '../../utils/utils';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MessageStyle } from '../../notification/notification.api';
@@ -81,11 +81,11 @@ export class CreateDialogComponent implements OnInit {
 
   private initForm(): void {
     this.bookCreationForm = this.formBuilder.group({
-      avatar_url: new FormControl(null, [Validators.maxLength(100)]),
+      avatar_url: new FormControl(null, [Validators.maxLength(300), imageUrlValidator()]),
       title: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
       author: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
       createdDate: new FormControl(null, [Validators.required]),
-      description: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+      description: new FormControl(null, [Validators.required, Validators.maxLength(300)]),
     })
   }
 

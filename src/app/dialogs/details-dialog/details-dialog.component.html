@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="d-flex justify-content-start align-items-center">
+    <div matDialogTitle>Book Details</div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <div class="d-flex flex-column px-3">
+      <div class="d-flex flex-column mb-2">
+        <span class="info-title">Title</span>
+        <span class="popup-content">{{ data.title }}</span>
+      </div>
+
+      <div class="d-flex flex-column mb-2">
+        <span class="info-title">Author</span>
+        <span class="popup-content">{{ data.author }}</span>
+      </div>
+
+      <div class="d-flex flex-column mb-2">
+        <span class="info-title">Published</span>
+        <span class="popup-content">{{ data.createdDate | date:'MM-dd-yyyy' }}</span>
+      </div>
+
+      <div class="d-flex flex-column mb-2">
+        <span class="info-title">Description</span>
+        <span class="popup-content">{{ data.description }}</span>
+      </div>
+
+      @if (data.avatar_url) {
+        <div class="d-flex flex-column mb-2">
+          <span class="info-title">Book avatar</span>
+          <img [src]="data.avatar_url" alt="Book Avatar" class="avatar-img" />
+        </div>
+      }
+    </div>
+  </div>
+
+  <mat-divider class="w-100 mt-3"></mat-divider>
+
+  <div class="d-flex justify-content-between align-items-center py-4 px-3">
+    <div>
+      <button mat-icon-button
+              class="me-3"
+              matTooltip="Edit book card"
+              [matTooltipShowDelay]="HINT_SHOW_DELAY"
+              (click)="onEditBook(data)"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+
+      <button mat-icon-button
+              color="warn"
+              matTooltip="Delete book card"
+              [matTooltipShowDelay]="HINT_SHOW_DELAY"
+              (click)="onDeleteBook(data)"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+
+    <button mat-flat-button matDialogClose cdkFocusInitial>
+      <span class="px-2">Close</span>
+    </button>
+  </div>
+</div>
+

@@ -12,11 +12,11 @@ import { MatIconModule } from '@angular/material/icon'
 import { MatDividerModule } from '@angular/material/divider'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
-import { clearSelection } from '../../utils/utils'
+import {clearSelection, imageUrlValidator} from '../../utils/utils'
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatInputModule } from '@angular/material/input'
 import { MessageStyle } from '../../notification/notification.api'
-import {BOOK_FORM_FIELDS, HINT_SHOW_DELAY, MAX_DATE} from '../../constants/constants'
+import {BOOK_FORM_FIELDS, MAX_DATE} from '../../constants/constants'
 import * as dataInterfaces from '../../interfaces/data-interfaces';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BookCollectionService } from '../../services/book-collection.service';
@@ -88,11 +88,11 @@ export class EditDialogComponent implements OnInit {
 
   private initForm(): void {
     this.bookUpdatingForm = this.formBuilder.group({
-      avatar_url: new FormControl(this.data.avatar_url, [Validators.maxLength(100)]),
+      avatar_url: new FormControl(this.data.avatar_url, [Validators.maxLength(300), imageUrlValidator()]),
       title: new FormControl(this.data.title, [Validators.required, Validators.maxLength(100)]),
       author: new FormControl(this.data.author, [Validators.required, Validators.maxLength(100)]),
       createdDate: new FormControl(new Date(this.data.createdDate), [Validators.required]),
-      description: new FormControl(this.data.description, [Validators.required, Validators.maxLength(100)]),
+      description: new FormControl(this.data.description, [Validators.required, Validators.maxLength(300)]),
     })
 
     this.initialFormValues = this.bookUpdatingForm.getRawValue()
@@ -108,6 +108,4 @@ export class EditDialogComponent implements OnInit {
     this.dialogRef.disableClose = false
     this.bookUpdatingForm.enable()
   }
-
-  protected readonly HINT_SHOW_DELAY = HINT_SHOW_DELAY;
 }

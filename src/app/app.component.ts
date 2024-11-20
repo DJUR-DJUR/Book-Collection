@@ -14,6 +14,7 @@ import {CreateDialogComponent} from './dialogs/create-dialog/create-dialog.compo
 import {EditDialogComponent} from './dialogs/edit-dialog/edit-dialog.component';
 import {NgTemplateOutlet} from '@angular/common';
 import {BookCollectionService} from './services/book-collection.service';
+import {DetailsDialogComponent} from './dialogs/details-dialog/details-dialog.component';
 
 
 @Component({
@@ -51,7 +52,13 @@ export class AppComponent implements OnInit {
     this.loading.set(false)
   }
 
-  onBookClick(book: Book) {}
+  onBookClick(book: Book) {
+    this.dialog.open(DetailsDialogComponent, {
+      maxWidth: MAX_WIDTH_POPUP_DESKTOP,
+      minWidth: MAX_WIDTH_POPUP_DESKTOP,
+      data: book,
+    })
+  }
 
   onEditBook(book: Book) {
     this.dialog.open(EditDialogComponent, {
