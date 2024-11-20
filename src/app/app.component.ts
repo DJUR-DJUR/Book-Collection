@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
     this.loading.set(false)
   }
 
-  onBookClick(book: Book) {
+  onBookClick(book: Book): void {
     this.dialog.open(DetailsDialogComponent, {
       maxWidth: MAX_WIDTH_POPUP_DESKTOP,
       minWidth: MAX_WIDTH_POPUP_DESKTOP,
@@ -60,7 +60,7 @@ export class AppComponent implements OnInit {
     })
   }
 
-  onEditBook(book: Book) {
+  onEditBook(book: Book): void {
     this.dialog.open(EditDialogComponent, {
       maxWidth: MAX_WIDTH_POPUP_DESKTOP,
       minWidth: MAX_WIDTH_POPUP_DESKTOP,

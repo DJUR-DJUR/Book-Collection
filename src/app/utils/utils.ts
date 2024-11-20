@@ -1,11 +1,6 @@
-import { lastValueFrom, timer} from 'rxjs';
 import {AbstractControl, ValidationErrors, ValidatorFn} from '@angular/forms';
 
-export const wait = (due: number) => {
-  return lastValueFrom(timer(due));
-};
-
-export const clearSelection = () => {
+export const clearSelection = (): void => {
   const selection = document.getSelection();
   if (selection) {
     selection.removeAllRanges();

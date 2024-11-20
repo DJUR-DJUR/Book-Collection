@@ -48,7 +48,7 @@ export class SearchComponent {
       });
   }
 
-  clearSearch(event: MouseEvent) {
+  clearSearch(event: MouseEvent): void {
     event.preventDefault();
 
     if (this.search.getRawValue()) {
@@ -57,7 +57,7 @@ export class SearchComponent {
     }
   }
 
-  onBlur() {
+  onBlur(): void {
     if (!this.search.getRawValue()) {
       this.isBlurred.next(true)
     }

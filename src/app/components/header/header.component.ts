@@ -49,11 +49,11 @@ export class HeaderComponent implements OnInit {
     this.initForm()
   }
 
-  onSearch(event: string) {
+  onSearch(event: string): void {
     this.searchChange.next(event);
   }
 
-  onSearchBlur() {
+  onSearchBlur(): void {
     this.showSearch.set(false)
   }
 
