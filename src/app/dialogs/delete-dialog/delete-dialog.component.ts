@@ -5,9 +5,9 @@ import { MatIconModule } from '@angular/material/icon'
 import { MatDividerModule } from '@angular/material/divider'
 import { MatButtonModule } from '@angular/material/button'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
-import { ApiService } from '../../api/api.service'
 import { NotificationService } from '../../notification/notification.service'
 import { MessageStyle } from '../../notification/notification.api'
+import {BookCollectionService} from '../../services/book-collection.service';
 
 @Component({
   selector: 'app-delete-dialog',
@@ -22,7 +22,7 @@ export class DeleteDialogComponent {
 
   private readonly dialogRef = inject(MatDialogRef<DeleteDialogComponent>)
   public readonly data = inject(MAT_DIALOG_DATA) as dataInterfaces.Book
-  private readonly apiService = inject(ApiService)
+  private readonly apiService = inject(BookCollectionService)
   private readonly notification = inject(NotificationService)
 
   public async confirmDelete(): Promise<void> {

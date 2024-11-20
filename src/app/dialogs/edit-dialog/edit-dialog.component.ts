@@ -6,7 +6,6 @@ import {
   signal,
 } from '@angular/core'
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog'
-import { ApiService } from '../../api/api.service'
 import { NotificationService } from '../../notification/notification.service'
 import { MatButtonModule } from '@angular/material/button'
 import { MatIconModule } from '@angular/material/icon'
@@ -17,9 +16,10 @@ import { clearSelection } from '../../utils/utils'
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatInputModule } from '@angular/material/input'
 import { MessageStyle } from '../../notification/notification.api'
-import { BOOK_FORM_FIELDS, MAX_DATE } from '../../constants/constants'
+import {BOOK_FORM_FIELDS, HINT_SHOW_DELAY, MAX_DATE} from '../../constants/constants'
 import * as dataInterfaces from '../../interfaces/data-interfaces';
-import { MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { BookCollectionService } from '../../services/book-collection.service';
 
 @Component({
   selector: 'app-create-dialog',
@@ -43,16 +43,20 @@ export class EditDialogComponent implements OnInit {
   saving = signal<boolean>(false)
 
   bookUpdatingForm!: FormGroup
-  initialFormValues: any
+  initialFormValues!: dataInterfaces.Book
 
   private readonly dialogRef = inject(MatDialogRef<EditDialogComponent>)
-  private readonly apiService = inject(ApiService)
+  private readonly apiService = inject(BookCollectionService)
   private readonly notification = inject(NotificationService)
   private readonly formBuilder = inject(FormBuilder)
   public readonly data = inject(MAT_DIALOG_DATA) as dataInterfaces.Book
 
   protected readonly BOOK_FORM_FIELDS = BOOK_FORM_FIELDS
   protected readonly MAX_DATE = MAX_DATE
+
+  get isDataEqual(): boolean {
+    return JSON.stringify(this.initialFormValues) === JSON.stringify(this.bookUpdatingForm.getRawValue())
+  }
 
   ngOnInit(): void {
     this.initForm()
@@ -70,13 +74,13 @@ export class EditDialogComponent implements OnInit {
       this.saving.set(false)
       this.notification.showNotification({
         message: 'An error occurred while updating the book',
-        style: MessageStyle.Error
+        style: MessageStyle.Error,
       })
       this.enabledForm()
     } else {
       this.notification.showNotification({
         message: 'The book has been successfully updated',
-        style: MessageStyle.Success
+        style: MessageStyle.Success,
       })
       this.dialogRef.close()
     }
@@ -94,10 +98,6 @@ export class EditDialogComponent implements OnInit {
     this.initialFormValues = this.bookUpdatingForm.getRawValue()
   }
 
-  get isDataEqual(): boolean {
-    return JSON.stringify(this.initialFormValues) === JSON.stringify(this.bookUpdatingForm.getRawValue())
-  }
-
   private disableForm(): void {
     this.dialogRef.disableClose = true
     clearSelection()
@@ -108,4 +108,6 @@ export class EditDialogComponent implements OnInit {
     this.dialogRef.disableClose = false
     this.bookUpdatingForm.enable()
   }
+
+  protected readonly HINT_SHOW_DELAY = HINT_SHOW_DELAY;
 }

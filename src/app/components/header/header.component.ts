@@ -10,7 +10,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { TitleCasePipe } from '@angular/common'
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ErrorSettingsEnum } from '../../interfaces/data-interfaces'
-import { ApiService } from '../../api/api.service'
+import {FakeApiService} from '../../api/fake-api.service';
 
 
 @Component({
@@ -34,12 +34,13 @@ import { ApiService } from '../../api/api.service'
 export class HeaderComponent implements OnInit {
   @Output() reloadData = new EventEmitter<void>()
   @Output() searchChange = new EventEmitter<string>();
+  @Output() createNewBook = new EventEmitter<void>();
 
   showSearch = signal<boolean>(false)
   errorSettingsControlNames = signal<string[]>([])
 
   private readonly formBuilder = inject(FormBuilder)
-  protected readonly apiService = inject(ApiService)
+  protected readonly apiService = inject(FakeApiService)
   protected readonly HINT_SHOW_DELAY = HINT_SHOW_DELAY
 
   errorSettingsForm!: FormGroup

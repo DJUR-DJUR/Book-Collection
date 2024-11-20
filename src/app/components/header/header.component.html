@@ -9,7 +9,16 @@
         ></app-search>
       } @else {
         <button mat-icon-button
-                matTooltip="Search book"
+                matTooltip="Create new book card"
+                class="me-2"
+                [matTooltipShowDelay]="HINT_SHOW_DELAY"
+                (click)="createNewBook.next()"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+
+        <button mat-icon-button
+                matTooltip="Search book card"
                 class="me-2"
                 [matTooltipShowDelay]="HINT_SHOW_DELAY"
                 (click)="showSearch.set(true)"

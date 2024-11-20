@@ -6,7 +6,6 @@ import {
   signal,
 } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { ApiService } from '../../api/api.service';
 import { NotificationService } from '../../notification/notification.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MessageStyle } from '../../notification/notification.api';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import {BOOK_FORM_FIELDS, MAX_DATE} from '../../constants/constants'
+import {BookCollectionService} from "../../services/book-collection.service";
 
 @Component({
   selector: 'app-create-book-dialog',
@@ -44,7 +44,7 @@ export class CreateDialogComponent implements OnInit {
   bookCreationForm!: FormGroup
 
   private readonly dialogRef = inject(MatDialogRef<CreateDialogComponent>)
-  private readonly apiService = inject(ApiService)
+  private readonly apiService = inject(BookCollectionService)
   private readonly notification = inject(NotificationService)
   private readonly formBuilder = inject(FormBuilder)
 
