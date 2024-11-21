@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core'
-import * as dataInterfaces from '../../interfaces/data-interfaces'
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog'
 import { MatIconModule } from '@angular/material/icon'
 import { MatDividerModule } from '@angular/material/divider'
@@ -7,7 +6,8 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { NotificationService } from '../../notification/notification.service'
 import { MessageStyle } from '../../notification/notification.api'
-import {BookCollectionService} from '../../services/book-collection.service';
+import {BooksService} from '../../services/books.service';
+import {Book} from '../../api/interfaces';
 
 @Component({
   selector: 'app-delete-dialog',
@@ -21,8 +21,8 @@ export class DeleteDialogComponent {
   saving = signal<boolean>(false)
 
   private readonly dialogRef = inject(MatDialogRef<DeleteDialogComponent>)
-  public readonly data = inject(MAT_DIALOG_DATA) as dataInterfaces.Book
-  private readonly apiService = inject(BookCollectionService)
+  public readonly data = inject<Book>(MAT_DIALOG_DATA)
+  private readonly apiService = inject(BooksService)
   private readonly notification = inject(NotificationService)
 
   public async confirmDelete(): Promise<void> {

@@ -9,8 +9,8 @@ import { MatMenuModule,  } from '@angular/material/menu'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { TitleCasePipe } from '@angular/common'
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
-import { ErrorSettingsEnum } from '../../interfaces/data-interfaces'
 import {FakeApiService} from '../../api/fake-api.service';
+import {ErrorSettingsEnum} from '../../api/interfaces';
 
 
 @Component({

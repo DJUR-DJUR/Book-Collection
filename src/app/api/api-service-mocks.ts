@@ -1,4 +1,4 @@
-import { Book } from '../interfaces/data-interfaces'
+import {Book} from './interfaces';
 
 export const booksMock: Book[] = [
   {

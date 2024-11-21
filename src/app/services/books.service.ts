@@ -1,14 +1,14 @@
 import { inject, Injectable, signal } from '@angular/core'
-import { Book } from '../interfaces/data-interfaces'
 import { FakeApiService } from '../api/fake-api.service';
 import { firstValueFrom } from 'rxjs';
 import {HttpResponse} from '@angular/common/http';
+import {Book} from '../api/interfaces';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class BookCollectionService {
+export class BooksService {
 
   private bookListSignal = signal<Book[]>([])
   private getErrorSignal = signal<boolean>(false)

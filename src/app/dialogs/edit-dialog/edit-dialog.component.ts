@@ -17,9 +17,9 @@ import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatInputModule } from '@angular/material/input'
 import { MessageStyle } from '../../notification/notification.api'
 import {BOOK_FORM_FIELDS, MAX_DATE} from '../../constants/constants'
-import * as dataInterfaces from '../../interfaces/data-interfaces';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { BookCollectionService } from '../../services/book-collection.service';
+import { BooksService } from '../../services/books.service';
+import {Book} from '../../api/interfaces';
 
 @Component({
   selector: 'app-create-dialog',
@@ -43,13 +43,13 @@ export class EditDialogComponent implements OnInit {
   saving = signal<boolean>(false)
 
   bookUpdatingForm!: FormGroup
-  initialFormValues!: dataInterfaces.Book
+  initialFormValues!: Book
 
   private readonly dialogRef = inject(MatDialogRef<EditDialogComponent>)
-  private readonly apiService = inject(BookCollectionService)
+  private readonly apiService = inject(BooksService)
   private readonly notification = inject(NotificationService)
   private readonly formBuilder = inject(FormBuilder)
-  public readonly data = inject(MAT_DIALOG_DATA) as dataInterfaces.Book
+  public readonly data = inject<Book>(MAT_DIALOG_DATA)
 
   protected readonly BOOK_FORM_FIELDS = BOOK_FORM_FIELDS
   protected readonly MAX_DATE = MAX_DATE

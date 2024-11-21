@@ -1,12 +1,12 @@
 <mat-card
   appearance="outlined"
   class="container mt-5"
-  [class.h-100]="error() || loading() || !bookList().length"
+  [class.h-100]="error() || loading() || !booksList().length"
 >
   <app-header
     (reloadData)="loadData()"
     (searchChange)="loadData($event)"
-    (createNewBook)="createNewBook()"
+    (createNewBook)="onActionClick(BookActionNamesEnum.create, null)"
   ></app-header>
 
   @if (loading()) {
@@ -18,7 +18,7 @@
       <h5>Something went wrong. Please try again.</h5>
       <button mat-raised-button (click)="loadData()">Reload</button>
     </div>
-  } @else if (!bookList().length) {
+  } @else if (!booksList().length) {
     <div class="d-flex flex-column align-items-center justify-content-center h-100">
       <h5>No books found</h5>
       <ng-container *ngTemplateOutlet="addBook"></ng-container>
@@ -26,13 +26,13 @@
   } @else {
     <div class="container">
       <div class="row">
-        @for (book of bookList(); track book.id) {
+        @for (book of booksList(); track book.id) {
           <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
             <app-book
               [book]="book"
-              (bookClick)="onBookClick(book)"
-              (bookEdit)="onEditBook(book)"
-              (bookDelete)="onDeleteBook(book)"
+              (bookClick)="onActionClick(BookActionNamesEnum.open, book)"
+              (bookEdit)="onActionClick(BookActionNamesEnum.edit, book)"
+              (bookDelete)="onActionClick(BookActionNamesEnum.delete, book)"
             ></app-book>
           </div>
         }
@@ -45,7 +45,7 @@
 <ng-template #addBook>
   <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
     <mat-card class="d-flex justify-content-center align-items-center h-100 book-card py-3"
-              (click)="createNewBook()"
+              (click)="onActionClick(BookActionNamesEnum.create, null)"
     >
       <mat-icon class="add-icon"
                 matTooltip="Create new book card"

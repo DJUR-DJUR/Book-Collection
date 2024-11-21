@@ -4,8 +4,8 @@ import { MatIconModule } from '@angular/material/icon'
 import { MatButtonModule } from '@angular/material/button'
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { DEFAULT_AVATAR_URL, HINT_SHOW_DELAY } from '../../constants/constants'
-import { Book } from '../../interfaces/data-interfaces'
 import {DatePipe} from '@angular/common';
+import {Book} from '../../api/interfaces';
 
 
 @Component({

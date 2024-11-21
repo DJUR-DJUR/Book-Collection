@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, mergeMap, Observable, of, switchMap, throwError, timer} from 'rxjs';
 import { delay } from 'rxjs/operators';
-import {Book, ErrorSettings} from '../interfaces/data-interfaces';
 import { booksMock } from './api-service-mocks';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Book, ErrorSettings} from './interfaces';
 
 const REQUEST_DELAY = 2000
 

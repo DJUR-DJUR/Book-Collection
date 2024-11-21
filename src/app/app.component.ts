@@ -1,20 +1,17 @@
 import { Component, inject, OnInit, signal } from '@angular/core'
-import { Book } from './interfaces/data-interfaces'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { MatButtonModule } from '@angular/material/button'
 import { MatCardModule } from '@angular/material/card'
 import { MatIconModule } from '@angular/material/icon'
 import { MatTooltip } from '@angular/material/tooltip'
-import { HINT_SHOW_DELAY, MAX_WIDTH_POPUP_DESKTOP } from './constants/constants'
-import { MatDialog } from '@angular/material/dialog'
-import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component'
+import { HINT_SHOW_DELAY } from './constants/constants'
 import { HeaderComponent } from './components/header/header.component'
 import { BookComponent } from './components/book/book.component'
-import {CreateDialogComponent} from './dialogs/create-dialog/create-dialog.component';
-import {EditDialogComponent} from './dialogs/edit-dialog/edit-dialog.component';
-import {NgTemplateOutlet} from '@angular/common';
-import {BookCollectionService} from './services/book-collection.service';
-import {DetailsDialogComponent} from './dialogs/details-dialog/details-dialog.component';
+import {NgTemplateOutlet} from '@angular/common'
+import {BooksService} from './services/books.service'
+import {Book} from './api/interfaces'
+import {BookActionNamesEnum} from './enums/enums'
+import {ActionsService} from './services/actions.service'
 
 
 @Component({
@@ -34,13 +31,14 @@ import {DetailsDialogComponent} from './dialogs/details-dialog/details-dialog.co
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  protected readonly apiService = inject(BookCollectionService)
+  protected readonly apiService = inject(BooksService)
+  private readonly actionService = inject(ActionsService)
   protected readonly HINT_SHOW_DELAY = HINT_SHOW_DELAY
-  private readonly dialog = inject(MatDialog)
+  protected readonly BookActionNamesEnum = BookActionNamesEnum;
 
   loading = signal<boolean>(false)
   error = this.apiService.getError
-  bookList = this.apiService.bookList
+  booksList = this.apiService.bookList
 
   async ngOnInit(): Promise<void> {
     await this.loadData()
@@ -52,34 +50,7 @@ export class AppComponent implements OnInit {
     this.loading.set(false)
   }
 
-  onBookClick(book: Book): void {
-    this.dialog.open(DetailsDialogComponent, {
-      maxWidth: MAX_WIDTH_POPUP_DESKTOP,
-      minWidth: MAX_WIDTH_POPUP_DESKTOP,
-      data: book,
-    })
-  }
-
-  onEditBook(book: Book): void {
-    this.dialog.open(EditDialogComponent, {
-      maxWidth: MAX_WIDTH_POPUP_DESKTOP,
-      minWidth: MAX_WIDTH_POPUP_DESKTOP,
-      data: book,
-    })
-  }
-
-  createNewBook(): void {
-    this.dialog.open(CreateDialogComponent, {
-      maxWidth: MAX_WIDTH_POPUP_DESKTOP,
-      minWidth: MAX_WIDTH_POPUP_DESKTOP,
-    })
-  }
-
-  onDeleteBook(book: Book): void {
-    this.dialog.open(DeleteDialogComponent, {
-      maxWidth: MAX_WIDTH_POPUP_DESKTOP,
-      minWidth: MAX_WIDTH_POPUP_DESKTOP,
-      data: book,
-    })
+  onActionClick(action: BookActionNamesEnum, book: Book | null) {
+    this.actionService.executeFileAction(action, book)
   }
 }
