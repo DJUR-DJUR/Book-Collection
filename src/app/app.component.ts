@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
     this.loading.set(false)
   }
 
-  onActionClick(action: BookActionNamesEnum, book: Book | null) {
+  onActionClick(action: BookActionNamesEnum, book: Book | null): void {
     this.actionService.executeFileAction(action, book)
   }
 }
