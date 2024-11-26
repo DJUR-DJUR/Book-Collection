@@ -1,14 +1,20 @@
 import { inject, Injectable } from '@angular/core'
 import { BookActionNamesEnum } from '../enums/enums'
 import { Book } from '../api/interfaces'
-import {DialogsService} from './dialogs.service';
+import {DetailsDialogComponent} from '../dialogs/details-dialog/details-dialog.component';
+import {MAX_WIDTH_POPUP_DESKTOP} from '../constants/constants';
+import {firstValueFrom} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {CreateDialogComponent} from '../dialogs/create-dialog/create-dialog.component';
+import {EditDialogComponent} from '../dialogs/edit-dialog/edit-dialog.component';
+import {DeleteDialogComponent} from '../dialogs/delete-dialog/delete-dialog.component';
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class ActionsService {
-  private readonly dialogsService = inject(DialogsService)
+  private readonly dialog = inject(MatDialog)
 
   public executeFileAction(actionName: BookActionNamesEnum, book: Book | null): void {
     switch (actionName) {
@@ -33,7 +39,13 @@ export class ActionsService {
 
   private async openBook(book: Book | null): Promise<void> {
     if (!book) return
-    const result: BookActionNamesEnum = await this.dialogsService.openBook(book)
+    const result: BookActionNamesEnum = await firstValueFrom(
+      this.dialog.open(DetailsDialogComponent, {
+        maxWidth: MAX_WIDTH_POPUP_DESKTOP,
+        minWidth: MAX_WIDTH_POPUP_DESKTOP,
+        data: book,
+      }).afterClosed()
+    )
 
     if (result === BookActionNamesEnum.edit) {
       this.editBook(book)
@@ -45,16 +57,27 @@ export class ActionsService {
   }
 
   private createBook(): void {
-    void this.dialogsService.createBook()
+    this.dialog.open(CreateDialogComponent, {
+      maxWidth: MAX_WIDTH_POPUP_DESKTOP,
+      minWidth: MAX_WIDTH_POPUP_DESKTOP,
+    })
   }
 
   private editBook(book: Book | null): void {
     if (!book) return
-    void this.dialogsService.editBook(book)
+    this.dialog.open(EditDialogComponent, {
+      maxWidth: MAX_WIDTH_POPUP_DESKTOP,
+      minWidth: MAX_WIDTH_POPUP_DESKTOP,
+      data: book,
+    })
   }
 
   private deleteBook(book: Book | null): void {
     if (!book) return
-    void this.dialogsService.deleteBook(book)
+    this.dialog.open(DeleteDialogComponent, {
+      maxWidth: MAX_WIDTH_POPUP_DESKTOP,
+      minWidth: MAX_WIDTH_POPUP_DESKTOP,
+      data: book,
+    })
   }
 }
