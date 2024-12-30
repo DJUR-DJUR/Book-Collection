@@ -19,6 +19,7 @@ import { MessageStyle } from '../../notification/notification.api';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import {BOOK_FORM_FIELDS, MAX_DATE} from '../../constants/constants'
 import {BooksService} from "../../services/books.service";
+import {Book} from '../../api/interfaces';
 
 @Component({
   selector: 'app-create-book-dialog',
@@ -39,64 +40,81 @@ import {BooksService} from "../../services/books.service";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateDialogComponent implements OnInit {
-  saving = signal<boolean>(false)
+  saving = signal<boolean>(false);
 
-  bookCreationForm!: FormGroup
+  bookCreationForm!: FormGroup<{
+    avatar_url: FormControl<string | null>;
+    title: FormControl<string | null>;
+    author: FormControl<string | null>;
+    createdDate: FormControl<Date | null>;
+    description: FormControl<string | null>;
+  }>;
 
-  private readonly dialogRef = inject(MatDialogRef<CreateDialogComponent>)
-  private readonly apiService = inject(BooksService)
-  private readonly notification = inject(NotificationService)
-  private readonly formBuilder = inject(FormBuilder)
+  private readonly dialogRef = inject(MatDialogRef<CreateDialogComponent>);
+  private readonly apiService = inject(BooksService);
+  private readonly notification = inject(NotificationService);
+  private readonly formBuilder = inject(FormBuilder);
 
-  protected readonly BOOK_FORM_FIELDS = BOOK_FORM_FIELDS
-  protected readonly MAX_DATE = MAX_DATE
+  protected readonly BOOK_FORM_FIELDS = BOOK_FORM_FIELDS;
+  protected readonly MAX_DATE = MAX_DATE;
 
   ngOnInit(): void {
-    this.initForm()
+    this.initForm();
   }
 
   async createNewBook(): Promise<void> {
-    if (this.bookCreationForm.invalid) return
+    if (this.bookCreationForm.invalid) {
+      return;
+    }
 
-    this.saving.set(true)
-    this.disableForm()
+    this.saving.set(true);
+    this.disableForm();
 
-    await this.apiService.createBook(this.bookCreationForm.value)
+    const formValue = this.bookCreationForm.value;
+    const bookData: Omit<Book, 'id'> = {
+      avatar_url: formValue.avatar_url ?? '',
+      title: formValue.title ?? '',
+      author: formValue.author ?? '',
+      createdDate: formValue.createdDate ?? new Date(),
+      description: formValue.description ?? '',
+    };
+
+    await this.apiService.createBook(bookData);
 
     if (this.apiService.postError()) {
-      this.saving.set(false)
+      this.saving.set(false);
       this.notification.showNotification({
         message: 'An error occurred while creating the book',
         style: MessageStyle.Error
-      })
-      this.enabledForm()
+      });
+      this.enabledForm();
     } else {
       this.notification.showNotification({
         message: 'The book has been successfully created',
         style: MessageStyle.Success
-      })
-      this.dialogRef.close()
+      });
+      this.dialogRef.close();
     }
   }
 
   private initForm(): void {
     this.bookCreationForm = this.formBuilder.group({
-      avatar_url: new FormControl(null, [Validators.maxLength(300), imageUrlValidator()]),
-      title: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
-      author: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
-      createdDate: new FormControl(null, [Validators.required]),
-      description: new FormControl(null, [Validators.required, Validators.maxLength(300)]),
-    })
+      avatar_url: new FormControl<string | null>(null, [Validators.maxLength(300), imageUrlValidator()]),
+      title: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(100)]),
+      author: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(100)]),
+      createdDate: new FormControl<Date | null>(null, [Validators.required]),
+      description: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(300)]),
+    });
   }
 
   private disableForm (): void {
-    this.dialogRef.disableClose = true
-    clearSelection()
-    this.bookCreationForm.disable()
+    this.dialogRef.disableClose = true;
+    clearSelection();
+    this.bookCreationForm.disable();
   }
 
   private enabledForm (): void {
-    this.dialogRef.disableClose = false
-    this.bookCreationForm.enable()
+    this.dialogRef.disableClose = false;
+    this.bookCreationForm.enable();
   }
 }

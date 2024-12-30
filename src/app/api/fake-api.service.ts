@@ -5,13 +5,13 @@ import { booksMock } from './api-service-mocks';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Book, ErrorSettings} from './interfaces';
 
-const REQUEST_DELAY = 2000
+const REQUEST_DELAY = 2000;
 
 @Injectable({
   providedIn: 'root',
 })
 export class FakeApiService {
-  private readonly STORAGE_KEY = 'book_collection'
+  private readonly STORAGE_KEY = 'book_collection';
   private requestSubject = new BehaviorSubject<string>('');
 
   errorSettings: ErrorSettings = {
@@ -23,12 +23,12 @@ export class FakeApiService {
 
   constructor() {
     if (!localStorage.getItem(this.STORAGE_KEY)) {
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(booksMock))
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(booksMock));
     }
   }
 
   getBooks(filter = ''): Observable<Book[] | HttpErrorResponse> {
-    const normalizedFilter = filter.trim().toLowerCase();
+    const normalizedFilter: string = filter.trim().toLowerCase();
     this.requestSubject.next(normalizedFilter);
 
     return this.requestSubject.pipe(
@@ -59,8 +59,8 @@ export class FakeApiService {
     );
   }
 
-  createBook(newBook: Partial<Book>): Observable<HttpResponse<Book> | HttpErrorResponse> {
-    const currentBooks = this.getBooksFromStorage();
+  createBook(newBook: Omit<Book, 'id'>): Observable<HttpResponse<Book> | HttpErrorResponse> {
+    const currentBooks: Book[] = this.getBooksFromStorage();
     const createdBook: Book = {
       id: this.generateUniqueId(),
       avatar_url: newBook.avatar_url ?? '',
@@ -69,7 +69,7 @@ export class FakeApiService {
       createdDate: new Date(),
       description: newBook.description ?? '',
     };
-    const updatedBooks = [...currentBooks, createdBook];
+    const updatedBooks: Book[] = [...currentBooks, createdBook];
 
     if (this.errorSettings.post) {
       return timer(REQUEST_DELAY).pipe(
@@ -110,7 +110,7 @@ export class FakeApiService {
       return of(errorResponse);
     }
 
-    const updatedBook = { ...bookToUpdate, ...updatedData };
+    const updatedBook: Book = { ...bookToUpdate, ...updatedData };
 
     if (this.errorSettings.put) {
       return timer(REQUEST_DELAY).pipe(
@@ -125,8 +125,8 @@ export class FakeApiService {
       );
     }
 
-    const updatedBooks = currentBooks.map(book =>
-      book.id === bookId ? updatedBook : book
+    const updatedBooks: Book[] = currentBooks.map(book =>
+      book.id === updatedData.id ? updatedBook : book
     );
 
     this.saveBooksToStorage(updatedBooks);
@@ -140,8 +140,8 @@ export class FakeApiService {
   }
 
   deleteBook(bookId: string): Observable<HttpResponse<{ id: string }> | HttpErrorResponse> {
-    const currentBooks = this.getBooksFromStorage();
-    const updatedBooks = currentBooks.filter(book => book.id !== bookId);
+    const currentBooks: Book[] = this.getBooksFromStorage();
+    const updatedBooks: Book[] = currentBooks.filter(book => book.id !== bookId);
 
     if (this.errorSettings.delete) {
       return timer(REQUEST_DELAY).pipe(
@@ -170,12 +170,12 @@ export class FakeApiService {
   }
 
   private getBooksFromStorage(): Book[] {
-    const data = localStorage.getItem(this.STORAGE_KEY)
-    return data ? JSON.parse(data) : []
+    const data: string | null = localStorage.getItem(this.STORAGE_KEY);
+    return data ? JSON.parse(data) : [];
   }
 
   private saveBooksToStorage(books: Book[]): void {
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(books))
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(books));
   }
 
   private generateUniqueId(): string {
